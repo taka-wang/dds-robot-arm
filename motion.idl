@@ -1,0 +1,12 @@
+// DDS IDL
+
+module Motion
+{
+	struct coordinate 
+	{
+    	float x;	// x
+    	float y;	// y
+	};
+#pragma keylist coordinate
+
+};

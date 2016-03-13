@@ -1,0 +1,12 @@
+sudo: required
+
+services:
+    - docker
+
+script:
+    - docker build -t goleap goleap/.
+    - docker build -t mqtt-robot-arm mqtt/.
+    - docker build -t dds-robot-arm .
+
+notifications:
+    email: false
