@@ -1,9 +1,5 @@
-FROM takawang/golang:x86
+FROM takawang/gozmq:x86
 MAINTAINER Taka Wang <taka@cmwang.net>
-
-## Install required development packages
-RUN apt-get update
-RUN apt-get install -y pkg-config
 
 
 WORKDIR /go
