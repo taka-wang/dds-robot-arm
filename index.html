@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Dds-robot-arm by taka-wang</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Dds-robot-arm</h1>
+      <h2 class="project-tagline">Control robotic arm with leap motion via DDS</h2>
+      <a href="https://github.com/taka-wang/dds-robot-arm" class="btn">View on GitHub</a>
+      <a href="https://github.com/taka-wang/dds-robot-arm/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/taka-wang/dds-robot-arm/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="dds-robot-arm" class="anchor" href="#dds-robot-arm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>dds-robot-arm</h1>
+
+<p><a href="https://travis-ci.org/taka-wang/dds-robot-arm"><img src="https://travis-ci.org/taka-wang/dds-robot-arm.svg?branch=master" alt="Build Status"></a></p>
+
+<p>Control robotic arm with leap motion via DDS </p>
+
+<p><img src="https://github.com/taka-wang/dds-robot-arm/blob/master/ncomponent.png?raw=true" alt="component"></p>
+
+<h2>
+<a id="demo-sop" class="anchor" href="#demo-sop" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo SOP</h2>
+
+<ol>
+<li>Power on two PCs</li>
+<li>Plug-in usb cable and turn on AP Router</li>
+<li>Check whether notebook connect to AP router automatically</li>
+<li>Open terminal, split the console window
+
+<ol>
+<li>run goleap</li>
+<li>run dds_motion</li>
+<li>ssh ad; run dds_robot</li>
+<li>ssh ad; run dds_robot2</li>
+</ol>
+</li>
+</ol>
+
+<h2>
+<a id="install-libs" class="anchor" href="#install-libs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>INSTALL LIBS</h2>
+
+<h3>
+<a id="system-update" class="anchor" href="#system-update" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>System update</h3>
+
+<div class="highlight highlight-source-shell"><pre>sudo apt-get update
+sudo apt-get install git libssl-dev libc-ares-dev build-essential libtool autoconf automake uuid-dev cmake</pre></div>
+
+<h3>
+<a id="install-dds-library" class="anchor" href="#install-dds-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install DDS Library</h3>
+
+<p>Download <a href="http://www.prismtech.com/vortex/software-downloads">Vortex Lite</a>, then install it.</p>
+
+<h3>
+<a id="install-libzmqzeromq-325" class="anchor" href="#install-libzmqzeromq-325" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install libzmq(zeromq) 3.2.5</h3>
+
+<div class="highlight highlight-source-shell"><pre>wget http://download.zeromq.org/zeromq-3.2.5.tar.gz
+tar xvzf zeromq-3.2.5.tar.gz
+<span class="pl-c1">cd</span> zeromq-3.2.5
+./configure
+make
+sudo make install
+sudo ldconfig
+<span class="pl-c">#sudo ln -sf /usr/local/lib/libzmq.so /usr/lib/libzmq.so</span></pre></div>
+
+<h3>
+<a id="install-czmq-high-level-c-binding-for-zeromq" class="anchor" href="#install-czmq-high-level-c-binding-for-zeromq" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install czmq (high-level C binding for zeromq)</h3>
+
+<div class="highlight highlight-source-shell"><pre>git clone git://github.com/zeromq/czmq.git
+<span class="pl-c1">cd</span> czmq
+./autogen.sh
+./configure
+make
+sudo make install
+sudo ldconfig</pre></div>
+
+<h3>
+<a id="install-librs232-cross-platform-serial-library" class="anchor" href="#install-librs232-cross-platform-serial-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install librs232 (cross-platform serial library)</h3>
+
+<div class="highlight highlight-source-shell"><pre>git clone https://github.com/taka-wang/librs232.git
+<span class="pl-c1">cd</span> librs232
+./autogen.sh
+./configure --prefix=/usr
+make
+sudo make install
+sudo ldconfig</pre></div>
+
+<h3>
+<a id="install-golang-16--zmq-binding-for-goleap" class="anchor" href="#install-golang-16--zmq-binding-for-goleap" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install golang 1.6 &amp; zmq binding (for goleap)</h3>
+
+<div class="highlight highlight-source-shell"><pre>sudo apt-get install pkg-config
+curl -O https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz
+tar -xvf go1.6.linux-amd64.tar.gz
+sudo mv go /usr/local
+nano <span class="pl-k">~</span>/.profile
+<span class="pl-k">export</span> PATH=<span class="pl-smi">$PATH</span>:/usr/local/go/bin
+
+go get github.com/taka-wang/zmq3
+go get github.com/taka-wang/gomotion</pre></div>
+
+<hr>
+
+<h2>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BUILD</h2>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"># build dds_motion, dds_robot, dds_robot2</span>
+<span class="pl-c1">cd</span> dds-robot-arm
+mkdir build
+<span class="pl-c1">cd</span> build
+cmake ..
+make
+
+<span class="pl-c"># build goleap</span>
+<span class="pl-c1">cd</span> dds-robot-arm/goleap
+go build
+
+<span class="pl-c"># build mqtt_motion, mqtt_robot</span>
+<span class="pl-c1">cd</span> dds-robot-arm/mqtt
+mkdir build
+<span class="pl-c1">cd</span> build
+cmake ..
+make</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/taka-wang/dds-robot-arm">Dds-robot-arm</a> is maintained by <a href="https://github.com/taka-wang">taka-wang</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
